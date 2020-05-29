@@ -1,0 +1,21 @@
+
+<ExampleButton>:
+	FlexLayout:
+		FlexLayout:
+			orientation: "horizontal"
+			FlexButton:
+				text: "text1"
+				on_release:
+					self.text = 'text1' if self.text == 'text2' else 'text2'
+		FlexLayout:
+			orientation: "horizontal"
+			FlexButton:
+				text: "<- splash"
+				on_release:
+					Window.set_title("splash")
+					app.root.current = "splash"
+			FlexButton:
+				text: "label ->"
+				on_release:
+					Window.set_title("label")
+					app.root.current = "examplelabel"

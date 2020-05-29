@@ -1,0 +1,25 @@
+
+<ExampleKivyapi>:
+	FlexLayout:
+		FlexLayout:
+			FlexLabel:
+				id: texting
+				text: "Example Label"
+			FlexText:
+				id: url
+				hint_text: "url"
+				text: "https://api.github.com/users/VictorManhani"
+			FlexButton:
+				text: "Click to call the API"
+				on_release:
+					root.call_api(url.text)
+		FlexLayout:
+			orientation: "horizontal"
+			FlexButton:
+				text: "<- exampletext"
+				on_release:
+					app.root.current = "exampletext"
+			FlexButton:
+				text: "splash ->"
+				on_release:
+					app.root.current = "splash"

@@ -1,6 +1,9 @@
 import click
-from modules.simple_app import simple_app
 import time
+import os
+import shutil
+
+from modules.structures import simple_app_mvc, show_case_mvc
 
 def colorizer(text_no_decorate, text_to_decorate, color):
     click.echo(
@@ -19,17 +22,23 @@ def main():
 @click.option('--mode', '-m', 
               default = 'simple_app', nargs = 1, required=False)
 @click.option("--arch", "-a",
-              default = "mvc")
-def create(name, mode, arch):
-    """create structure app.
-       args:
-          kv create meu_app
-    """
+              default = "mvc", required=False)
+@click.option('--path', '-p',
+              default = ".", nargs = 1, required=False)
+def create(name, mode, arch, path):
+    """create structure app."""
+    app_path = path + '\\' + name
+    
+    if mode == 'simple_app' and arch == 'mvc':
+        simple_app_mvc(app_path, name)
+    elif mode == "show_case" and arch == 'mvc':
+        show_case_mvc(app_path)
+
     colorizer("[mode] ", mode, 'green')
     colorizer("[arch] ", arch, 'green')
-    simple_app(name)
+     
     with click.progressbar(
-        iterable = [1,2], label = '[create]',
+        iterable = [1,1], label = '[create]',
         bar_template='%(label)s %(bar)s | %(info)s',
         fill_char=click.style(u'█', fg='cyan'),
         empty_char=' ') as bar:
@@ -38,26 +47,18 @@ def create(name, mode, arch):
     colorizer("[status] ", f'{name} created', 'green')
 
 @main.command('run')
-def run():
-    click.launch("py " + __file__)
+@click.argument("app_name", 
+                default = 'main', nargs = 1)
+def run(app_name):
+    os.system(f"py {app_name}.py")
 
-
-# @click.option("--simple_app", "-sa", 
-#               default = True)
-
-# def main(project_name, simple_app, arch):
-
-
-#     from pyfiglet import Figlet
-#     f = Figlet(font = 'slant')
-#     click.echo(click.style(
-#         f.renderText("Kivy CLI"), fg = 'blue'
-#     ))
-#     colorizer('', "Welcome to Kivy CLI", 'green')
-#     colorizer('Project Name: ', project_name, 'blue')
-#     colorizer('Project Mode: ', simple_app, 'blue')
-#     colorizer('Project Arch: ', arch, 'blue')
+@main.command('init')
+def init():
+    from pyfiglet import Figlet
+    f = Figlet(font = 'slant')
+    click.echo(click.style(f.renderText("Kivy CLI"), fg = 'blue'))
+    colorizer('', "Welcome to Kivy CLI", 'green')
+    colorizer('', "In Here Everything OK!!!", 'yellow')
 
 if __name__ == "__main__":
     main()
-    click.pause()
